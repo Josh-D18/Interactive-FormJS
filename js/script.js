@@ -148,11 +148,14 @@ paymentFunc();
 let nameHint = document.querySelector('#name-hint');
 let emailHint = document.querySelector("#email-hint");
 let activitiesHint = document.querySelector('#activities-hint');
+let ccHint = document.querySelector('#cc-hint');
+let cvvHint = document.querySelector('#cvv-hint');
+let zipHint = document.querySelector('#zip-hint');
+
 
 // -- Name Helper Function
 function nameIsValid(){
     let name = document.querySelector('#name');
-    let nameHint = document.querySelector('#name-hint');
 
     if (name.value === '' || name.length < 0){
         return false;
@@ -162,6 +165,7 @@ function nameIsValid(){
 }
 
 // -- Email Helper Function
+
 function isEmailValid(){
     let emailReg = /^[^@]+@[^@.]+\.[a-z]+$/i;
     let emailValue = document.querySelector('#email').value;
@@ -191,21 +195,49 @@ function activityChecker(){
 
 // Credit Card Helper Function
 
-function creditCard(){
-    let paymentMethodCreditCard = document.querySelector('#payment').options[1];
+function creditCardChecker(){
+    let paymentMethodCreditCard = document.querySelector('#payment');
     
-    // The "Card number" field must contain a 13 - 16 digit credit card number with no dashes or spaces. The value does not need to be a real credit card number.
-// The "Zip code" field must contain a 5 digit number.
-// The "CVV" field must contain a 3 digit number.
+
+    let selected = paymentMethodCreditCard.options[1];
+    // Card Number 
+
+    // field must contain a 13 - 16 digit credit card number with no dashes or spaces
+    let cardNumber = document.querySelector('#cc-num').value;
+    let regCardNum = /[0-9]{13,16}/;
+
+    // Zip code
+    // "Zip code" field must contain a 5 digit number.
+
+    let zipCode = document.querySelector('#zip').value;
+    let regZipCode = /[0-9]{5}/;
 
 
-    if (paymentMethodCreditCard.selected){
+    // CVV
+    // The "CVV" field must contain a 3 digit number
+    let cvv = document.querySelector('#cvv').value;
+    let regCVV = /[0-9]{3}/;
+    
 
-    }
+
+
+    paymentMethodCreditCard.addEventListener('change', (e)=> {
+        
+        if (e.target.options[paymentMethodCreditCard.selectedIndex] === selected){
+            if(!regCardNum.test(cardNumber)){
+                ccHint.classList.remove('hint');
+                return false;
+            } else if (!regZipCode.test(zipCode) || zipCode === ''){
+                zipHint.classList.remove('hint');
+                return false;
+            } else if (!regCVV.test(cvv) || cvv === ''){
+                cvvHint.classList.remove('hint');
+                return false;
+            }
+    } 
+
+    });
 }
-
-creditCard();
-
 
 
 
@@ -227,6 +259,10 @@ function formValidate(){
         if (!activityChecker()){
             e.preventDefault();
             activitiesHint.classList.remove('hint');
+        }
+
+        if (!creditCardChecker()){
+            e.preventDefault();
         }
     });
 }
