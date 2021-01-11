@@ -157,7 +157,7 @@ let zipHint = document.querySelector('#zip-hint');
 function nameIsValid(){
     let name = document.querySelector('#name');
 
-    if (name.value === '' || name.length < 0){
+    if (name.value === '' || name.length < 1){
         return false;
     } else{
         return true;
@@ -227,10 +227,13 @@ function creditCardChecker(){
             if(!regCardNum.test(cardNumber)){
                 ccHint.classList.remove('hint');
                 return false;
-            } else if (!regZipCode.test(zipCode) || zipCode === ''){
+            } 
+            if (!regZipCode.test(zipCode) || zipCode === ''){
                 zipHint.classList.remove('hint');
                 return false;
-            } else if (!regCVV.test(cvv) || cvv === ''){
+            } 
+            
+            if (!regCVV.test(cvv) || cvv === ''){
                 cvvHint.classList.remove('hint');
                 return false;
             }
