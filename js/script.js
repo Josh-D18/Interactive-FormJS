@@ -197,7 +197,7 @@ function activityChecker(){
 
 function creditCardChecker(){
     let paymentMethodCreditCard = document.querySelector('#payment');
-    
+    let form = document.querySelector('form');
 
     let selected = paymentMethodCreditCard.options[1];
     // Card Number 
@@ -220,35 +220,40 @@ function creditCardChecker(){
     
 
 
+    let validCC = true;
 
-    paymentMethodCreditCard.addEventListener('change', (e)=> {
-        
-        if (e.target.options[paymentMethodCreditCard.selectedIndex] === selected){
-            if(!regCardNum.test(cardNumber)){
-                ccHint.classList.remove('hint');
-                return false;
+    paymentMethodCreditCard.addEventListener('change', ()=> {
+        form.addEventListener('submit', (e)=>{
+            console.log(paymentMethodCreditCard, paymentMethodCreditCard.selectedIndex)
+            if (e.target.options[paymentMethodCreditCard.selectedIndex] === selected){
+                if(!regCardNum.test(cardNumber) || cardNumber === ''){
+                    validCC = false;
+                    ccHint.classList.remove('hint');
+                } 
+    
+                if (!regZipCode.test(zipCode) || zipCode === ''){
+                    validCC = false;
+                    zipHint.classList.remove('hint');
+                } 
+                
+                if (!regCVV.test(cvv) || cvv === ''){
+                    validCC = false;
+                    cvvHint.classList.remove('hint');
+                }
             } 
-            if (!regZipCode.test(zipCode) || zipCode === ''){
-                zipHint.classList.remove('hint');
-                return false;
-            } 
-            
-            if (!regCVV.test(cvv) || cvv === ''){
-                cvvHint.classList.remove('hint');
-                return false;
-            }
-    } 
-
+            return validCC;
+        });
     });
 }
-
 
 
 function formValidate(){
     let form = document.querySelector('form');
     
+
     form.addEventListener('submit', (e)=>{
-        
+        creditCardChecker();
+
         if (!nameIsValid()){
             e.preventDefault();
             nameHint.classList.remove('hint');
@@ -271,3 +276,41 @@ function formValidate(){
 }
 
 formValidate();
+
+// Accessibility
+// Program all of the activity checkbox input elements to listen for the focus and blur events.
+// When the focus event is detected, add the ".focus" className to the checkbox input’s parent label element.
+// When the blur event is detected, remove the .focus className from the label element that possesses it. It can be helpful here to directly target the element with the className of .focus in order to remove it.
+
+function focusHelperFunc(ele){
+    ele.parentElement.classList.add('focus');
+};
+
+function blurHelperFunc(ele){
+    ele.parentElement.classList.remove('focus');
+    ele.parentElement.classList.add('blur');
+    console.log(ele.parentElement)
+}
+function accessiblityFunc(){
+    let activities = document.querySelectorAll("#activities-box label input");
+
+    for (let i = 0; i < activities.length; i++){
+        console.log(activities[i].parentElement)
+        activities[i].addEventListener('keyup',(e)=>{
+            if(activities[i] === e.target){
+                focusHelperFunc(e.target);
+            } 
+            if (activities[i].parentElement.classList === 'focus'){
+                blurHelperFunc(e.target);
+            } 
+        });
+
+        activities[i].addEventListener('keyup', (e)=>{
+            if (activities[i] !== e.target){
+                blurHelperFunc(e.target);
+            } 
+        });
+    }
+}
+
+accessiblityFunc();
