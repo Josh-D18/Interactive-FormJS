@@ -1,4 +1,4 @@
-// Adding Input Foucs to the Form
+// Adding Foucs to the name input when the screen loads
 
 function inputFunc(){
     let input = document.querySelector('#name');
@@ -34,6 +34,7 @@ function colorTShirtFunc(){
 
     let design = document.querySelector('#design');
 
+    // Check for a click on the desgin element. When clicked, fliter through selections
     design.addEventListener('click', (e) => {
         colorShirt.style.display = 'block';
         let shirtStyle = e.target.value;
@@ -67,7 +68,7 @@ colorTShirtFunc();
 function activitiesFunc(){
     let activities = document.querySelector("#activities");
 
-
+    // Check if the activity is clicked and if it is add amount to total amount
     activities.addEventListener('change', (e)=>{
         let cost = document.querySelector('#activities-cost');
 
@@ -75,7 +76,7 @@ function activitiesFunc(){
         // Total Price
         let clicked = e.target;
         let clickedCost = parseInt(e.target.getAttribute('data-cost'));
-    
+        
         if (clicked.checked){
             totalAmount += clickedCost;
         } else {
@@ -179,7 +180,7 @@ function isEmailValid(){
 }
 
 
-// Register Activity Helper Function
+// -- Register Activity Helper Function
 
 function activityChecker(){
     let activities = document.querySelectorAll("#activities-box label input");
@@ -255,12 +256,6 @@ formValidate();
 
 // Accessibility
 
-// Program all of the activity checkbox input elements to listen for the focus and blur events.
-// When the focus event is detected, add the ".focus" className to the checkbox input’s parent label element.
-// When the blur event is detected, remove the .focus className from the label element that possesses it. It can be helpful here to directly target the element with the className of .focus in order to remove it.
-
-
-
 // Helper Functions 
 
 
@@ -278,7 +273,7 @@ function blurHelperFunc(ele){
 
 function focusBlurFunc(){
     let activities = document.querySelectorAll("#activities-box label input");
-
+    // Check if activity has either the focus or blur effect added. If it clicked on the blur effect will go away and the foucs effect will be added and vice versa
     for (let i = 0; i < activities.length; i++){
         activities[i].addEventListener('focus',(e)=>{
             if(activities[i] === e.target){
@@ -306,7 +301,7 @@ function formErrorsFunc(){
     let zipCode = document.querySelector('#zip');
     let cvv = document.querySelector('#cvv');
 
-
+    // If form is submitted check for errors. If no errors are present the form will submit
     form.addEventListener('submit', (e)=>{
         if (!nameIsValid()){
             e.preventDefault();
@@ -338,6 +333,10 @@ function formErrorsFunc(){
                 e.preventDefault();
                 cvv.parentElement.classList.add('not-valid');
             }
+        }
+        
+        if (!paymentMethodCreditCard.options[1].selected && !paymentMethodCreditCard.options[2].selected && !paymentMethodCreditCard.options[3].selected){
+            e.preventDefault();
         }
 
         // If Valid
@@ -389,31 +388,3 @@ function accessiblityFunc(){
 }
 
 accessiblityFunc();
-
-// When a user selects an activity, loop over all of the activities, check if any have the same day and time as the activity that was just checked/unchecked, and as long as the matching activity is not the activity that was just checked/unchecked, disable/enable the conflicting activity’s checkbox input and add/remove the ‘.disabled’ className to activity’s parent label element.
-
-
-function isActivityChecked(){
-    // let activities = document.querySelectorAll('#activities-box label');
-    let activities = document.querySelectorAll('#activities-box label input');
-    
-    
-    // Check if selection of costs conflict
-    let listOfActivities = document.querySelector("#activities");
-
-
-    listOfActivities.addEventListener('change', (e)=>{
-        for (let i = 0; i < activities.length; i++){
-            let dateAndTime = activities[i].dataset.dayAndTime;
-
-            if (activities[i].dataset.dayAndTime === dateAndTime && activities[i].checked){
-                console.log(activities[i].checked, dateAndTime);
-                activities[i].parentElement.classList.add('disabled');
-            } else{
-                activities[i].parentElement.classList.remove('disabled');
-            }
-        }
-    });
-}
-
-isActivityChecked();
