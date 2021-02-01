@@ -18,7 +18,9 @@ function jobRoleFunc(){
     jobRoles.addEventListener('click', (e) => {
         if (e.target.value === 'other'){
             otherJobRole.style.display = 'block';
-        }
+        } else{
+            otherJobRole.style.display = 'none';
+        } 
     });
 
 }
@@ -35,23 +37,27 @@ function colorTShirtFunc(){
     let design = document.querySelector('#design');
 
     // Check for a click on the desgin element. When clicked, fliter through selections
-    design.addEventListener('click', (e) => {
+    design.addEventListener('change', (e) => {
         colorShirt.style.display = 'block';
         let shirtStyle = e.target.value;
 
         let heartShirt = document.querySelectorAll('[data-theme="heart js"]');
         let punShirt = document.querySelectorAll('[data-theme="js puns"]');
-
+        let color = document.querySelector('#color');
         // If statement to check if the shirt style is 'js puns' or 'heart js'
         if (shirtStyle === 'js puns'){
             for (let i = 0; i < heartShirt.length; i++){
                 heartShirt[i].style.display = 'none';
                 punShirt[i].style.display = 'block';
+                color.selectedIndex = 0;
             }
-        } else if (shirtStyle === 'heart js'){
+        } 
+        
+        if (shirtStyle === 'heart js'){
             for (let i = 0; i < punShirt.length; i++){
                 punShirt[i].style.display = 'none';
                 heartShirt[i].style.display = 'block';
+                color.selectedIndex = 0;
             }
         }
     });
@@ -93,6 +99,9 @@ activitiesFunc();
 
 function paymentFunc(){
     let paymentMethod = document.querySelector('#payment');
+    
+    // Setting default payment
+    paymentMethod.selectedIndex = 1;
 
     // Payment Box
     let paymentBox = document.querySelector('.credit-card-box');
@@ -202,19 +211,19 @@ function activityChecker(){
 // Card Number 
     // field must contain a 13 - 16 digit credit card number with no dashes or spaces
     let cardNumber = document.querySelector('#cc-num').value;
-    let regCardNum = /[0-9]{13,16}/;
+    let regCardNum = /^\d{13,16}$/;
 
     // Zip code
     // "Zip code" field must contain a 5 digit number.
 
     let zipCode = document.querySelector('#zip').value;
-    let regZipCode = /[0-9]{5}/;
+    let regZipCode = /^\d{5}$/;
 
 
     // CVV
     // The "CVV" field must contain a 3 digit number
     let cvv = document.querySelector('#cvv').value;
-    let regCVV = /[0-9]{3}/;
+    let regCVV = /^\d{3}$/;
 
     let paymentMethodCreditCard = document.querySelector('#payment');
 
