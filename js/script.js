@@ -15,11 +15,11 @@ function jobRoleFunc(){
     otherJobRole.style.display = 'none';
 
     // Event Listener for the Job Roles. This will check if value if equal to 'other' and change the display value
-    jobRoles.addEventListener('click', (e) => {
+    jobRoles.addEventListener('change', (e) => {
         if (e.target.value === 'other'){
-            otherJobRole.style.display = 'block';
+            otherJobRole.setAttribute("style","display:block;");
         } else{
-            otherJobRole.style.display = 'none';
+            otherJobRole.setAttribute("style","display:none;");
         } 
     });
 
@@ -44,12 +44,16 @@ function colorTShirtFunc(){
         let heartShirt = document.querySelectorAll('[data-theme="heart js"]');
         let punShirt = document.querySelectorAll('[data-theme="js puns"]');
         let color = document.querySelector('#color');
+        let option = document.createElement("option");
         // If statement to check if the shirt style is 'js puns' or 'heart js'
         if (shirtStyle === 'js puns'){
             for (let i = 0; i < heartShirt.length; i++){
                 heartShirt[i].style.display = 'none';
                 punShirt[i].style.display = 'block';
-                color.selectedIndex = 0;
+                option.text = "Select A New Color";
+                option.setAttribute('hidden', '');
+                color.add(option);
+                color.selectedIndex = 7;
             }
         } 
         
@@ -57,7 +61,10 @@ function colorTShirtFunc(){
             for (let i = 0; i < punShirt.length; i++){
                 punShirt[i].style.display = 'none';
                 heartShirt[i].style.display = 'block';
-                color.selectedIndex = 0;
+                option.text = "Select A New Color";
+                option.setAttribute('hidden', '');
+                color.add(option);
+                color.selectedIndex = 7;
             }
         }
     });
